@@ -1,17 +1,23 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AdAstra - Gestão de Viagens</title>
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
     <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+    />
     <!-- Estilos personalizados -->
-    <link rel="stylesheet" href="css/styles.css">
-</head>
-<body>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container">
@@ -45,164 +51,232 @@
                 </ul>
             </div>
         </div>
+      </div>
     </nav>
 
     <div class="container mt-4">
-        <!-- Container de alertas -->
-        <div class="alert-container"></div>
+      <!-- Container de alertas -->
+      <div class="alert-container"></div>
 
-        <!-- Tabs -->
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
-            <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="lista-tab" data-bs-toggle="tab" data-bs-target="#lista" type="button" role="tab">
-                    <i class="bi bi-list"></i> Lista de Viagens
-                </button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="cadastro-tab" data-bs-toggle="tab" data-bs-target="#cadastro" type="button" role="tab">
-                    <i class="bi bi-plus-circle"></i> Nova Viagem
-                </button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="detalhes-tab" data-bs-toggle="tab" data-bs-target="#detalhes" type="button" role="tab">
-                    <i class="bi bi-info-circle"></i> Detalhes da Viagem
-                </button>
-            </li>
-        </ul>
+      <!-- Tabs -->
+      <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link active"
+            id="lista-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#lista"
+            type="button"
+            role="tab"
+          >
+            <i class="bi bi-list"></i> Lista de Viagens
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link"
+            id="cadastro-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#cadastro"
+            type="button"
+            role="tab"
+          >
+            <i class="bi bi-plus-circle"></i> Nova Viagem
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link"
+            id="detalhes-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#detalhes"
+            type="button"
+            role="tab"
+          >
+            <i class="bi bi-info-circle"></i> Detalhes da Viagem
+          </button>
+        </li>
+      </ul>
 
-        <!-- Conteúdo das tabs -->
-        <div class="tab-content" id="myTabContent">
-            <!-- Lista de Viagens -->
-            <div class="tab-pane fade show active" id="lista" role="tabpanel">
-                <div class="d-flex justify-content-between align-items-center my-3">
-                    <h2>Lista de Viagens</h2>
-                    <button class="btn btn-primary" id="btnRecarregarLista">
-                        <i class="bi bi-arrow-clockwise"></i> Recarregar
-                    </button>
-                </div>
-                
-                <div id="listaLoader" class="text-center" style="display: none;">
-                    <div class="spinner-border text-primary" role="status">
-                        <span class="visually-hidden">Carregando...</span>
-                    </div>
-                </div>
-                
-                <div class="row" id="listaViagens"></div>
+      <!-- Conteúdo das tabs -->
+      <div class="tab-content" id="myTabContent">
+        <!-- Lista de Viagens -->
+        <div class="tab-pane fade show active" id="lista" role="tabpanel">
+          <div class="d-flex justify-content-between align-items-center my-3">
+            <h2>Lista de Viagens</h2>
+            <button class="btn btn-primary" id="btnRecarregarLista">
+              <i class="bi bi-arrow-clockwise"></i> Recarregar
+            </button>
+          </div>
+
+          <div id="listaLoader" class="text-center" style="display: none">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Carregando...</span>
             </div>
+          </div>
 
-            <!-- Cadastro/Edição de Viagem -->
-            <div class="tab-pane fade" id="cadastro" role="tabpanel">
-                <h2 id="formTitle" class="my-3">Nova Viagem</h2>
-                
-                <form id="formViagem" class="needs-validation" novalidate>
-                    <input type="hidden" id="viagemId">
-                    
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id="pacoteId" required>
-                                <label for="pacoteId">ID do Pacote</label>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-floating mb-3">
-                                <input type="datetime-local" class="form-control" id="dataPartida" required>
-                                <label for="dataPartida">Data de Partida</label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-floating mb-3">
-                                <input type="number" class="form-control" id="duracaoHoras" required>
-                                <label for="duracaoHoras">Duração (horas)</label>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-floating mb-3">
-                                <input type="number" class="form-control" id="capacidade" required>
-                                <label for="capacidade">Capacidade</label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-floating mb-3">
-                        <textarea class="form-control" id="descricao" style="height: 100px" required></textarea>
-                        <label for="descricao">Descrição</label>
-                    </div>
-
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                        <button type="button" class="btn btn-secondary me-md-2" id="btnCancelar">Cancelar</button>
-                        <button type="submit" class="btn btn-primary" id="btnSalvar">Salvar</button>
-                    </div>
-                </form>
-            </div>            <!-- Detalhes da Viagem -->
-            <div class="tab-pane fade" id="detalhes" role="tabpanel">
-                <div class="d-flex justify-content-between align-items-center my-3">
-                    <h2>Detalhes da Viagem</h2>
-                </div>
-
-                <div id="detalhesLoader" class="text-center" style="display: none;">
-                    <div class="spinner-border text-primary" role="status">
-                        <span class="visually-hidden">Carregando...</span>
-                    </div>
-                </div>
-
-                <div class="card" id="detalhesViagem">                    <div class="card-header bg-primary text-white">
-                        <div id="detalhesDescricao"></div>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-4 mb-3">
-                                <h5><i class="bi bi-box"></i> Pacote</h5>
-                                <p id="detalhesPacote"></p>
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <h5><i class="bi bi-calendar"></i> Data de Partida</h5>
-                                <p id="detalhesDataPartida"></p>
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <h5><i class="bi bi-clock"></i> Duração</h5>
-                                <p id="detalhesDuracao"></p>
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <h5><i class="bi bi-people"></i> Capacidade</h5>
-                                <p id="detalhesCapacidade"></p>
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <h5><i class="bi bi-tag"></i> Status</h5>
-                                <p id="detalhesStatus"></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+          <div class="row" id="listaViagens"></div>
         </div>
+
+        <!-- Cadastro/Edição de Viagem -->
+        <div class="tab-pane fade" id="cadastro" role="tabpanel">
+          <h2 id="formTitle" class="my-3">Nova Viagem</h2>
+
+          <form id="formViagem" class="needs-validation" novalidate>
+            <input type="hidden" id="viagemId" />
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-floating mb-3">
+                  <!-- Substituir o input por um select -->
+                  <select class="form-select" id="pacoteId" required>
+                    <option value="">Selecione um pacote...</option>
+                  </select>
+                  <label for="pacoteId">Pacote</label>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-floating mb-3">
+                  <input
+                    type="datetime-local"
+                    class="form-control"
+                    id="dataPartida"
+                    required
+                  />
+                  <label for="dataPartida">Data de Partida</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-floating mb-3">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="duracaoHoras"
+                    required
+                  />
+                  <label for="duracaoHoras">Duração (horas)</label>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-floating mb-3">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="capacidade"
+                    required
+                  />
+                  <label for="capacidade">Capacidade</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-floating mb-3">
+              <textarea
+                class="form-control"
+                id="descricao"
+                style="height: 100px"
+                required
+              ></textarea>
+              <label for="descricao">Descrição</label>
+            </div>
+
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+              <button
+                type="button"
+                class="btn btn-secondary me-md-2"
+                id="btnCancelar"
+              >
+                Cancelar
+              </button>
+              <button type="submit" class="btn btn-primary" id="btnSalvar">
+                Salvar
+              </button>
+            </div>
+          </form>
+        </div>
+        <!-- Detalhes da Viagem -->
+        <div class="tab-pane fade" id="detalhes" role="tabpanel">
+          <div class="d-flex justify-content-between align-items-center my-3">
+            <h2>Detalhes da Viagem</h2>
+          </div>
+
+          <div id="detalhesLoader" class="text-center" style="display: none">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Carregando...</span>
+            </div>
+          </div>
+
+          <div class="card" id="detalhesViagem">
+            <div class="card-header bg-primary text-white">
+              <div id="detalhesDescricao"></div>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-4 mb-3">
+                  <h5><i class="bi bi-box"></i> Pacote</h5>
+                  <p id="detalhesPacote"></p>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <h5><i class="bi bi-calendar"></i> Data de Partida</h5>
+                  <p id="detalhesDataPartida"></p>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <h5><i class="bi bi-clock"></i> Duração</h5>
+                  <p id="detalhesDuracao"></p>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <h5><i class="bi bi-people"></i> Capacidade</h5>
+                  <p id="detalhesCapacidade"></p>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <h5><i class="bi bi-tag"></i> Status</h5>
+                  <p id="detalhesStatus"></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Modal de confirmação -->
     <div class="modal fade" id="confirmModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Confirmar Ação</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p id="confirmMessage"></p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" id="btnConfirmAction">Confirmar</button>
-                </div>
-            </div>
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Confirmar Ação</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p id="confirmMessage"></p>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <button type="button" class="btn btn-primary" id="btnConfirmAction">
+              Confirmar
+            </button>
+          </div>
         </div>
+      </div>
     </div>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Script da página -->
     <script src="js/cadastroViagem.js"></script>
-</body>
+  </body>
 </html>
