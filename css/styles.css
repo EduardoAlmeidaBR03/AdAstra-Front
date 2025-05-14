@@ -1,0 +1,58 @@
+/* Estilos personalizados para o AdAstra Frontend */
+
+body {
+    padding-top: 20px;
+    padding-bottom: 40px;
+    background-color: #f8f9fa;
+}
+
+.header {
+    margin-bottom: 30px;
+}
+
+.cliente-card {
+    margin-bottom: 20px;
+    transition: transform 0.3s;
+}
+
+.cliente-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.btn-action {
+    margin-right: 5px;
+}
+
+.form-floating {
+    margin-bottom: 15px;
+}
+
+#formCliente {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.required-field::after {
+    content: " *";
+    color: red;
+}
+
+.hidden {
+    display: none;
+}
+
+.alert-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    max-width: 300px;
+}
+
+.custom-loader {
+    display: none;
+    margin: 0 auto;
+    width: 3rem;
+    height: 3rem;
+}
