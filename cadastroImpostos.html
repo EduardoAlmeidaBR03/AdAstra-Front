@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AdAstra - Gestão de Impostos</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <!-- Estilos personalizados -->
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- Meta tag para impedir cache (facilita o desenvolvimento) -->
+    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">AdAstra</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="cadastroCliente.html">Clientes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="cadastroPacote.html">Pacotes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="cadastroViagem.html">Viagens</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="cadastroReserva.html">Reservas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="aprovacaoMedica.html">Aprovação Médica</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="certificacao.html">Certificações</a>
+                    </li>                    <li class="nav-item">
+                        <a class="nav-link active" href="cadastroImpostos.html">Impostos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="cadastroPagamento.html">Pagamentos</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <!-- Container para mensagens de alerta -->
+        <div class="alert-container"></div>
+
+        <!-- Cabeçalho da página -->
+        <div class="row mb-4">
+            <div class="col-md-8">
+                <h1>Gestão de Impostos</h1>
+                <p class="lead text-muted">Cadastre e gerencie as regras de impostos para diferentes países</p>
+            </div>
+            <div class="col-md-4 text-end d-flex align-items-center justify-content-end">
+                <div class="spinner-border text-primary me-2" role="status" id="impostoLoader" style="display: none;">
+                    <span class="visually-hidden">Carregando...</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Abas de navegação -->
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="lista-tab" data-bs-toggle="tab" data-bs-target="#lista" type="button" role="tab" aria-controls="lista" aria-selected="true">
+                    <i class="bi bi-list-ul"></i> Lista de Regras Fiscais
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="cadastro-tab" data-bs-toggle="tab" data-bs-target="#cadastro" type="button" role="tab" aria-controls="cadastro" aria-selected="false">
+                    <i class="bi bi-plus-circle"></i> Cadastrar Regra Fiscal
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="simulacao-tab" data-bs-toggle="tab" data-bs-target="#simulacao" type="button" role="tab" aria-controls="simulacao" aria-selected="false">
+                    <i class="bi bi-calculator"></i> Simulador de Impostos
+                </button>
+            </li>
+        </ul>
+
+        <!-- Conteúdo das abas -->
+        <div class="tab-content" id="myTabContent">
+            <!-- Aba de Lista -->
+            <div class="tab-pane fade show active" id="lista" role="tabpanel" aria-labelledby="lista-tab">
+                <div class="d-flex justify-content-between align-items-center my-4">
+                    <h2>Regras Fiscais Cadastradas</h2>
+                    <button class="btn btn-primary" id="btnRecarregarLista">
+                        <i class="bi bi-arrow-clockwise"></i> Recarregar
+                    </button>
+                </div>
+
+                <!-- Tabela de impostos -->
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-striped">
+                                <thead class="table-primary">
+                                    <tr>
+                                        <th>País de Origem</th>
+                                        <th>País de Destino</th>
+                                        <th>Percentual (%)</th>
+                                        <th>Descrição</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="listaImpostos">
+                                    <!-- Dados serão inseridos via JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Aba de Cadastro -->
+            <div class="tab-pane fade" id="cadastro" role="tabpanel" aria-labelledby="cadastro-tab">
+                <h2 id="formTitle" class="my-4">Cadastrar Nova Regra Fiscal</h2>
+                
+                <!-- Área para mensagens de erro do formulário -->
+                <div id="formErrorArea" class="alert alert-danger" style="display:none;"></div>
+                
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <form id="formImposto" class="needs-validation" novalidate>
+                            <input type="hidden" id="impostoId">
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="paisOrigem" class="form-label required-field">País de Origem</label>
+                                    <input type="text" class="form-control" id="paisOrigem" required>
+                                    <div class="invalid-feedback">
+                                        Informe o país de origem.
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="paisDestino" class="form-label required-field">País de Destino</label>
+                                    <input type="text" class="form-control" id="paisDestino" required>
+                                    <div class="invalid-feedback">
+                                        Informe o país de destino.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="percentual" class="form-label required-field">Percentual (%)</label>
+                                    <input type="number" class="form-control" id="percentual" min="0" max="100" step="0.01" required>
+                                    <div class="invalid-feedback">
+                                        Informe o percentual de imposto (0-100%).
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="descricao" class="form-label">Descrição</label>
+                                    <textarea class="form-control" id="descricao" rows="3"></textarea>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-end gap-2">
+                                <button type="button" class="btn btn-secondary" id="btnCancelar">Cancelar</button>
+                                <button type="submit" class="btn btn-primary" id="btnSalvar">Salvar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Aba de Simulação -->
+            <div class="tab-pane fade" id="simulacao" role="tabpanel" aria-labelledby="simulacao-tab">
+                <h2 class="my-4">Simulador de Cálculo de Impostos</h2>
+                
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <form id="formSimulacao">
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <label for="simPaisOrigem" class="form-label required-field">País de Origem</label>
+                                    <input type="text" class="form-control" id="simPaisOrigem" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="simPaisDestino" class="form-label required-field">País de Destino</label>
+                                    <input type="text" class="form-control" id="simPaisDestino" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="valorBase" class="form-label required-field">Valor Base</label>
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text">$</span>
+                                        <input type="number" class="form-control" id="valorBase" min="0" step="0.01" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-end">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="bi bi-calculator"></i> Calcular
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Resultado da simulação -->
+                <div class="card mt-4 bg-light" id="resultadoSimulacao" style="display: none;">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="card-title mb-0">Resultado da Simulação</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h6>Detalhes da Operação</h6>
+                                <p class="mb-1"><strong>Origem:</strong> <span id="resultOrigem"></span></p>
+                                <p class="mb-1"><strong>Destino:</strong> <span id="resultDestino"></span></p>
+                                <p class="mb-0"><strong>Percentual:</strong> <span id="resultPercentual"></span>%</p>
+                            </div>
+                            <div class="col-md-4">
+                                <h6>Valores</h6>
+                                <p class="mb-1"><strong>Valor Base:</strong> $<span id="resultValorBase"></span></p>
+                                <p class="mb-1"><strong>Valor do Imposto:</strong> $<span id="resultValorImposto"></span></p>
+                                <p class="mb-0 fw-bold"><strong>Valor Total:</strong> $<span id="resultValorTotal"></span></p>
+                            </div>
+                            <div class="col-md-4 d-flex align-items-end justify-content-end">
+                                <button class="btn btn-sm btn-outline-secondary" id="btnNovaSimulacao">
+                                    <i class="bi bi-arrow-repeat"></i> Nova Simulação
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Modal de confirmação -->
+        <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmModalLabel">Confirmar Ação</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p id="confirmMessage"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-danger" id="btnConfirmAction">Confirmar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/cadastroImpostos.js"></script>
+</body>
+</html>
