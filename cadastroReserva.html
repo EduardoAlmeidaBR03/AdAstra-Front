@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AdAstra - Gestão de Reservas</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <!-- Estilos personalizados -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">AdAstra</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="cadastroCliente.html">Clientes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="cadastroPacote.html">Pacotes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="cadastroViagem.html">Viagens</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="cadastroReserva.html">Reservas</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <!-- Cabeçalho -->
+        <header class="text-center mb-5">
+            <h1>Gestão de Reservas</h1>
+            <p class="lead">Gerencie as reservas de viagens espaciais</p>
+        </header>
+
+        <!-- Abas de navegação -->
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="lista-tab" data-bs-toggle="tab" data-bs-target="#lista" type="button" role="tab">
+                    <i class="bi bi-list-ul"></i> Lista de Reservas
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="cadastro-tab" data-bs-toggle="tab" data-bs-target="#cadastro" type="button" role="tab">
+                    <i class="bi bi-plus-circle"></i> Nova Reserva
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="detalhes-tab" data-bs-toggle="tab" data-bs-target="#detalhes" type="button" role="tab">
+                    <i class="bi bi-info-circle"></i> Detalhes da Reserva
+                </button>
+            </li>
+        </ul>
+
+        <!-- Conteúdo das abas -->
+        <div class="tab-content mt-4" id="myTabContent">
+            <!-- Aba de listagem -->
+            <div class="tab-pane fade show active" id="lista" role="tabpanel">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2>Lista de Reservas</h2>
+                    <button class="btn btn-primary" id="btnRecarregarLista">
+                        <i class="bi bi-arrow-clockwise"></i> Recarregar
+                    </button>
+                </div>
+                
+                <!-- Loader -->
+                <div class="text-center mb-4">
+                    <div class="spinner-border text-primary custom-loader" id="listaLoader" role="status">
+                        <span class="visually-hidden">Carregando...</span>
+                    </div>
+                </div>
+                
+                <!-- Lista de reservas -->
+                <div class="row" id="listaReservas"></div>
+            </div>
+
+            <!-- Aba de cadastro -->
+            <div class="tab-pane fade" id="cadastro" role="tabpanel">
+                <h2 id="formTitle">Nova Reserva</h2>
+                
+                <form id="formReserva" class="mt-4">
+                    <input type="hidden" id="reservaId">
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+                                <select class="form-select" id="clienteId" required>
+                                    <option value="">Selecione um cliente</option>
+                                </select>
+                                <label for="clienteId" class="required-field">Cliente</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+                                <select class="form-select" id="packageId" required>
+                                    <option value="">Selecione um pacote</option>
+                                </select>
+                                <label for="packageId" class="required-field">Pacote de Viagem</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-floating mb-3">
+                                <input type="number" class="form-control" id="valorOriginal" placeholder="Valor Original" readonly>
+                                <label for="valorOriginal">Valor Original</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-floating mb-3">
+                                <input type="number" class="form-control" id="valorImposto" placeholder="Valor do Imposto" readonly>
+                                <label for="valorImposto">Valor do Imposto</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-floating mb-3">
+                                <input type="number" class="form-control" id="valorTotal" placeholder="Valor Total" readonly>
+                                <label for="valorTotal">Valor Total</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                        <button type="button" class="btn btn-secondary me-md-2" id="btnCancelar">Cancelar</button>
+                        <button type="submit" class="btn btn-primary" id="btnSalvar">Salvar</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Aba de detalhes -->
+            <div class="tab-pane fade" id="detalhes" role="tabpanel">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2>Detalhes da Reserva</h2>
+                    <div>
+                        <button class="btn btn-outline-primary me-2" id="btnEditar">
+                            <i class="bi bi-pencil"></i> Editar
+                        </button>
+                        <button class="btn btn-outline-danger" id="btnExcluir">
+                            <i class="bi bi-trash"></i> Cancelar Reserva
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Loader -->
+                <div class="text-center mb-4">
+                    <div class="spinner-border text-primary custom-loader" id="detalhesLoader" role="status">
+                        <span class="visually-hidden">Carregando...</span>
+                    </div>
+                </div>
+                
+                <!-- Card com detalhes da reserva -->
+                <div class="card" id="detalhesReserva">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="card-title mb-0">Informações da Reserva</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <h5><i class="bi bi-person"></i> Cliente</h5>
+                                <p id="detalhesCliente"></p>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <h5><i class="bi bi-rocket"></i> Pacote</h5>
+                                <p id="detalhesPacote"></p>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <h5><i class="bi bi-currency-dollar"></i> Valor Original</h5>
+                                <p id="detalhesValorOriginal"></p>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <h5><i class="bi bi-percent"></i> Valor do Imposto</h5>
+                                <p id="detalhesValorImposto"></p>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <h5><i class="bi bi-cash"></i> Valor Total</h5>
+                                <p id="detalhesValorTotal"></p>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <h5><i class="bi bi-info-circle"></i> Status</h5>
+                                <p id="detalhesStatus"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Confirmação -->
+    <div class="modal fade" id="confirmModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmação</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="confirmMessage"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="btnConfirmAction">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Container para mensagens de alerta -->
+    <div class="alert-container"></div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Script da página -->
+    <script src="js/cadastroReserva.js"></script>
+</body>
+</html>
