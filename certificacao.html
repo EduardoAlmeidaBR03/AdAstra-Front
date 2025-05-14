@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AdAstra - Gestão de Certificações</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <!-- Estilos personalizados -->
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- Meta tag para impedir cache (facilita o desenvolvimento) -->
+    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">AdAstra</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="cadastroCliente.html">Clientes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="cadastroPacote.html">Pacotes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="cadastroViagem.html">Viagens</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="cadastroReserva.html">Reservas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="aprovacaoMedica.html">Aprovação Médica</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="certificacao.html">Certificações</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <!-- Container para mensagens de alerta -->
+        <div class="alert-container"></div>
+
+        <!-- Cabeçalho da página -->
+        <div class="row mb-4">
+            <div class="col-md-8">
+                <h1 class="display-5 mb-0">
+                    <i class="bi bi-award text-primary"></i> Gestão de Certificações
+                </h1>
+                <p class="lead text-muted">Gerencie os requisitos de certificação para viagens espaciais</p>
+            </div>
+            <div class="col-md-4 text-end d-flex align-items-center justify-content-end">
+                <div class="spinner-border text-primary me-2" role="status" id="listaLoader" style="display: none;">
+                    <span class="visually-hidden">Carregando...</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Abas de navegação -->
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="clientes-tab" data-bs-toggle="tab" data-bs-target="#clientes" type="button" role="tab" aria-controls="clientes" aria-selected="true">
+                    <i class="bi bi-people"></i> Clientes para Certificação
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="historico-tab" data-bs-toggle="tab" data-bs-target="#historico" type="button" role="tab" aria-controls="historico" aria-selected="false">
+                    <i class="bi bi-clock-history"></i> Histórico de Certificações
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="formulario-tab" data-bs-toggle="tab" data-bs-target="#formulario" type="button" role="tab" aria-controls="formulario" aria-selected="false">
+                    <i class="bi bi-file-earmark-plus"></i> Nova Certificação
+                </button>
+            </li>
+        </ul>
+
+        <!-- Conteúdo das abas -->
+        <div class="tab-content" id="myTabContent">
+            <!-- Aba de Clientes para Certificação -->
+            <div class="tab-pane fade show active" id="clientes" role="tabpanel" aria-labelledby="clientes-tab">
+                <div class="card shadow-sm mt-3">
+                    <div class="card-header bg-light">
+                        <div class="row align-items-center">
+                            <div class="col-md-8">
+                                <h5 class="mb-0">Clientes para Gerenciamento de Certificações</h5>
+                            </div>
+                            <div class="col-md-4 text-end">
+                                <button class="btn btn-sm btn-outline-secondary" id="btnRecarregarLista">
+                                    <i class="bi bi-arrow-clockwise"></i> Atualizar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <!-- Filtros -->
+                        <div class="row mb-4">
+                            <div class="col-md-4">                                <label for="filtroStatus" class="form-label">Status de Certificação:</label>
+                                <select class="form-select" id="filtroStatus">
+                                    <option value="">Todos</option>
+                                    <option value="Pendente">Pendente</option>
+                                    <option value="Em Andamento">Em Andamento</option>
+                                    <option value="Concluída">Concluída</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="filtroNome" class="form-label">Nome:</label>
+                                <input type="text" class="form-control" id="filtroNome" placeholder="Filtrar por nome...">
+                            </div>
+                            <div class="col-md-2 d-flex align-items-end">
+                                <button class="btn btn-primary w-100" id="btnAplicarFiltros">
+                                    <i class="bi bi-filter"></i> Filtrar
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Lista de clientes -->
+                        <div class="row" id="listaClientes">
+                            <!-- Os cards de clientes serão inseridos aqui via JavaScript -->
+                        </div>
+
+                        <!-- Paginação -->
+                        <nav aria-label="Paginação de clientes" class="mt-4">
+                            <ul class="pagination justify-content-center" id="paginacao"></ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Aba de Histórico de Certificações -->
+            <div class="tab-pane fade" id="historico" role="tabpanel" aria-labelledby="historico-tab">
+                <div class="card shadow-sm mt-3">
+                    <div class="card-header bg-light">
+                        <div class="row align-items-center">
+                            <div class="col-md-7">
+                                <h5 class="mb-0">Histórico de Certificações</h5>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="filtroClienteHistorico" placeholder="Buscar por cliente...">
+                                    <button class="btn btn-outline-secondary" type="button" id="btnFiltrarHistorico">
+                                        <i class="bi bi-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Cliente</th>
+                                        <th>Tipo de Certificação</th>
+                                        <th>Data de Emissão</th>
+                                        <th>Data de Validade</th>
+                                        <th>Status</th>
+                                        <th>Verificação</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tabelaHistorico">
+                                    <!-- Registros serão inseridos aqui via JavaScript -->
+                                    <tr>
+                                        <td colspan="7" class="text-center">Carregando histórico de certificações...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Spinner para carregamento do histórico -->
+                        <div class="text-center my-3">
+                            <div class="spinner-border text-primary" role="status" id="historicoLoader" style="display: none;">
+                                <span class="visually-hidden">Carregando...</span>
+                            </div>
+                        </div>
+
+                        <!-- Paginação do histórico -->
+                        <nav aria-label="Paginação do histórico" class="mt-4">
+                            <ul class="pagination justify-content-center" id="paginacaoHistorico"></ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Aba de Formulário de Certificação -->
+            <div class="tab-pane fade" id="formulario" role="tabpanel" aria-labelledby="formulario-tab">
+                <div class="card shadow-sm mt-3">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0" id="formTitle">Nova Certificação</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="formCertificacao">
+                            <!-- Campo oculto para ID (usado em edições) -->
+                            <input type="hidden" id="certificacaoId">
+
+                            <!-- Área de erro do formulário -->
+                            <div class="alert alert-danger" id="formErrorArea" style="display: none;"></div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="clienteId" class="form-label">Cliente<span class="text-danger">*</span></label>
+                                    <select class="form-select" id="clienteId" required>
+                                        <option value="">Selecione um cliente</option>
+                                        <!-- Opções serão inseridas via JavaScript -->
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Selecione um cliente.
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="tipoCertificacao" class="form-label">Tipo de Certificação<span class="text-danger">*</span></label>
+                                    <select class="form-select" id="tipoCertificacao" required>
+                                        <option value="">Selecione o tipo</option>
+                                        <option value="Treinamento Espacial Básico">Treinamento Espacial Básico</option>
+                                        <option value="Adaptação à Gravidade Zero">Adaptação à Gravidade Zero</option>
+                                        <option value="Emergências Espaciais">Emergências Espaciais</option>
+                                        <option value="Sobrevivência em Ambientes Hostis">Sobrevivência em Ambientes Hostis</option>
+                                        <option value="Procedimentos de Voo">Procedimentos de Voo</option>
+                                        <option value="Outro">Outro</option>
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Selecione um tipo de certificação.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3" id="outroTipoContainer" style="display: none;">
+                                <div class="col-12">
+                                    <label for="outroTipoCertificacao" class="form-label">Especifique o Tipo</label>
+                                    <input type="text" class="form-control" id="outroTipoCertificacao">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="dataEmissao" class="form-label">Data de Emissão<span class="text-danger">*</span></label>
+                                    <input type="date" class="form-control" id="dataEmissao" required>
+                                    <div class="invalid-feedback">
+                                        Informe a data de emissão.
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="dataValidade" class="form-label">Data de Validade</label>
+                                    <input type="date" class="form-control" id="dataValidade">
+                                    <div class="form-text">Deixe em branco se não houver data de expiração</div>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="entidadeEmissora" class="form-label">Entidade Emissora<span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="entidadeEmissora" required>
+                                    <div class="invalid-feedback">
+                                        Informe a entidade emissora.
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="numeroCertificado" class="form-label">Número do Certificado</label>
+                                    <input type="text" class="form-control" id="numeroCertificado">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label d-block">Status da Certificação<span class="text-danger">*</span></label>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="concluida" id="certificacaoConcluida" value="true">
+                        <label class="form-check-label" for="certificacaoConcluida">Concluída</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="concluida" id="certificacaoNaoConcluida" value="false" checked>
+                        <label class="form-check-label" for="certificacaoNaoConcluida">Em Andamento</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <!-- Espaço reservado para futura funcionalidade -->
+                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="observacoes" class="form-label">Observações</label>
+                                <textarea class="form-control" id="observacoes" rows="3"></textarea>
+                            </div>
+
+                            <div class="d-flex justify-content-end">
+                                <button type="button" class="btn btn-secondary me-2" id="btnCancelar">Cancelar</button>
+                                <button type="submit" class="btn btn-primary" id="btnSalvar">Salvar Certificação</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de Detalhes da Certificação -->
+        <div class="modal fade" id="detalhesModal" tabindex="-1" aria-labelledby="detalhesModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="detalhesModalLabel">Detalhes da Certificação</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <h5>Cliente:</h5>
+                                <p id="modalCliente"></p>
+                            </div>
+                            <div class="col-md-6">
+                                <h5>Tipo de Certificação:</h5>
+                                <p id="modalTipoCertificacao"></p>
+                            </div>
+                            <div class="col-md-6">
+                                <h5>Emissão:</h5>
+                                <p id="modalDataEmissao"></p>
+                            </div>
+                            <div class="col-md-6">
+                                <h5>Validade:</h5>
+                                <p id="modalDataValidade"></p>
+                            </div>
+                            <div class="col-md-6">
+                                <h5>Entidade Emissora:</h5>
+                                <p id="modalEntidadeEmissora"></p>
+                            </div>
+                            <div class="col-md-6">
+                                <h5>Número do Certificado:</h5>
+                                <p id="modalNumeroCertificado"></p>
+                            </div>
+                            <div class="col-md-6">
+                                <h5>Status:</h5>
+                                <p id="modalStatus"></p>
+                            </div>
+                            <div class="col-12">
+                                <h5>Observações:</h5>
+                                <div class="card">
+                                    <div class="card-body bg-light" id="modalObservacoes">
+                                        <!-- Observações aqui -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Modal de confirmação -->
+        <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmModalLabel">Confirmar Ação</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p id="confirmMessage"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-danger" id="btnConfirmAction">Confirmar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de Verificação de Certificado -->
+        <div class="modal fade" id="verificacaoModal" tabindex="-1" aria-labelledby="verificacaoModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header bg-info text-white">
+                        <h5 class="modal-title" id="verificacaoModalLabel">
+                            <i class="bi bi-shield-check"></i> Verificação de Autenticidade
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="text-center mb-3" id="verificacaoLoader">
+                            <div class="spinner-border text-info" role="status">
+                                <span class="visually-hidden">Verificando...</span>
+                            </div>
+                            <p class="mt-2">Consultando serviço externo de verificação...</p>
+                        </div>
+                        <div id="verificacaoResultado" style="display: none;">
+                            <div class="alert alert-success" id="verificacaoSucesso">
+                                <i class="bi bi-check-circle-fill"></i> <strong>Certificado autêntico!</strong>
+                                <p id="verificacaoMensagem" class="mt-2"></p>
+                            </div>
+                            <div class="alert alert-danger" id="verificacaoErro" style="display: none;">
+                                <i class="bi bi-exclamation-triangle-fill"></i> <strong>Falha na verificação!</strong>
+                                <p id="verificacaoErroMensagem" class="mt-2"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/certificacao.js"></script>
+</body>
+</html>
