@@ -113,7 +113,8 @@ function setupEventListeners() {
 
   // Botão de Pagamento (Mercado Pago) na tela de detalhes
   elements.detalhes.btnPagar.addEventListener("click", () => {
-    if (pagamentoAtual && pagamentoAtual.status === "PENDENTE") {
+    if (pagamentoAtual && pagamentoAtual.status === "Pendente") {
+      console.log("Botão Pagar clicado, redirecionando...", pagamentoAtual.booking_id);
       processarPagamentoMercadoPago(pagamentoAtual.booking_id);
     }
   });
@@ -382,7 +383,7 @@ function renderizarListaPagamentos(pagamentos) {
     btnVisualizar.addEventListener("click", () =>
       carregarDetalhesPagamento(pagamento.id)
     );    // Adicionar event listener para o botão Pagar (apenas para status PENDENTE)
-    if (pagamento.status === "PENDENTE") {
+    if (pagamento.status === "Pendente") {
       const btnPagar = pagamentoCard.querySelector(".btn-pagar");
       if (btnPagar) {
         btnPagar.addEventListener("click", (e) => {
@@ -468,7 +469,7 @@ async function carregarDetalhesPagamento(pagamentoId) {
     elements.detalhes.dataCriacao.textContent = dataCriacao;
 
     // Configurar botões de ação com base no status
-    if (pagamento.status === "PENDENTE") {
+    if (pagamento.status === "Pendente") {
       // Adicionar botão de pagar se o status for PENDENTE
       elements.detalhes.btnPagar.style.display = "inline-block";
       elements.detalhes.btnPagar.setAttribute(
@@ -843,22 +844,32 @@ async function processarPagamentoMercadoPago(bookingId) {
     }
 
     // Exibir mensagem informativa
-    mostrarAlerta("Redirecionando para o gateway de pagamento...", "info");
+    mostrarAlerta("Processando pagamento...", "info");
 
-    // Verificar se a reserva existe antes de redirecionar
-    try {
-      await fetchAPI(`/bookings/${bookingId}`);
-    } catch (error) {
-      throw new Error(`Reserva não encontrada (ID: ${bookingId})`);
+    // Fazer requisição POST para obter o link de pagamento
+    const mercadoPagoEndpoint = `/payments/mercadopago/create_preference?booking_id=${bookingId}`;
+    console.log(`Fazendo requisição POST para: ${API_URL}${mercadoPagoEndpoint}`);
+    
+    // Usar a função fetchAPI para fazer a requisição POST
+    const response = await fetchAPI(mercadoPagoEndpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    
+    // Verificar se a resposta contém um link para redirecionar
+    if (response && response.init_point) {
+      console.log(`Redirecionando para: ${response.init_point}`);
+      
+      // Mostrar alerta de sucesso antes de redirecionar
+      mostrarAlerta("Redirecionando para o gateway de pagamento...", "success");
+      
+      // Redirecionar para a página de pagamento do Mercado Pago
+      window.location.href = response.init_point;
+    } else {
+      throw new Error("Resposta do servidor não contém um link de pagamento válido");
     }
-
-    // Construir a URL do Mercado Pago com o ID da reserva
-    const mercadoPagoURL = `${API_URL}/payments/mercadopago/create_preference?booking_id=${bookingId}`;
-
-    console.log(`Redirecionando para: ${mercadoPagoURL}`);
-
-    // Redirecionar para a página de pagamento do Mercado Pago imediatamente
-    window.location.href = mercadoPagoURL;
   } catch (error) {
     console.error("Erro ao processar pagamento via Mercado Pago:", error);
     mostrarAlerta(`Erro ao iniciar pagamento: ${error.message}`, "danger");
