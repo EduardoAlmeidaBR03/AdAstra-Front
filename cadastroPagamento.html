@@ -1,399 +1,545 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AdAstra - Gestão de Pagamentos</title>
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
     <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+    />
     <!-- Estilos personalizados -->
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/styles.css" />
     <!-- Meta tag para impedir cache (facilita o desenvolvimento) -->
-    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
-</head>
-<body>
+    <meta
+      http-equiv="Cache-Control"
+      content="no-store, no-cache, must-revalidate, max-age=0"
+    />
+  </head>
+  <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container">
-            <a class="navbar-brand" href="index.html">AdAstra</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.html">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="cadastroCliente.html">Clientes</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="cadastroPacote.html">Pacotes</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="cadastroViagem.html">Viagens</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="cadastroReserva.html">Reservas</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="aprovacaoMedica.html">Aprovação Médica</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="certificacao.html">Certificações</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="cadastroImpostos.html">Impostos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="cadastroPagamento.html">Pagamentos</a>
-                    </li>
-                </ul>
-            </div>
+      <div class="container">
+        <a class="navbar-brand" href="index.html">AdAstra</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="cadastroCliente.html">Clientes</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="cadastroPacote.html">Pacotes</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="cadastroViagem.html">Viagens</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="cadastroReserva.html">Reservas</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="aprovacaoMedica.html"
+                >Aprovação Médica</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="certificacao.html">Certificações</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="cadastroImpostos.html">Impostos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="cadastroPagamento.html"
+                >Pagamentos</a
+              >
+            </li>
+          </ul>
         </div>
+      </div>
     </nav>
 
     <div class="container mt-4">
-        <!-- Cabeçalho -->
-        <header class="mb-4">
-            <h1>
-                <i class="bi bi-credit-card text-primary"></i> 
-                Gestão de Pagamentos
-            </h1>
-            <p class="lead">Gerencie e processe pagamentos de reservas de viagens espaciais.</p>
-        </header>
-        
-        <!-- Container de alertas -->
-        <div class="alert-container"></div>
+      <!-- Cabeçalho -->
+      <header class="mb-4">
+        <h1>
+          <i class="bi bi-credit-card text-primary"></i>
+          Gestão de Pagamentos
+        </h1>
+        <p class="lead">
+          Gerencie e processe pagamentos de reservas de viagens espaciais.
+        </p>
+      </header>
 
-        <!-- Tabs de navegação -->
-        <ul class="nav nav-tabs" id="pagamentoTabs" role="tablist">
-            <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="lista-tab" data-bs-toggle="tab" data-bs-target="#lista" type="button" 
-                    role="tab" aria-controls="lista" aria-selected="true">
-                    <i class="bi bi-list-ul"></i> Lista de Pagamentos
-                </button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="cadastro-tab" data-bs-toggle="tab" data-bs-target="#cadastro" type="button" 
-                    role="tab" aria-controls="cadastro" aria-selected="false">
-                    <i class="bi bi-plus-circle"></i> Novo Pagamento
-                </button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="detalhes-tab" data-bs-toggle="tab" data-bs-target="#detalhes" type="button" 
-                    role="tab" aria-controls="detalhes" aria-selected="false">
-                    <i class="bi bi-info-circle"></i> Detalhes do Pagamento
-                </button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="simulacao-tab" data-bs-toggle="tab" data-bs-target="#simulacao" type="button" 
-                    role="tab" aria-controls="simulacao" aria-selected="false">
-                    <i class="bi bi-currency-exchange"></i> Simulação de Pagamento
-                </button>
-            </li>
-        </ul>
-        
-        <!-- Conteúdo das Tabs -->
-        <div class="tab-content border border-top-0 rounded-bottom p-4" id="pagamentoTabsContent">
-            <!-- Tab Lista -->
-            <div class="tab-pane fade show active" id="lista" role="tabpanel" aria-labelledby="lista-tab">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h2>Listagem de Pagamentos 
-                        <div class="spinner-border spinner-border-sm text-primary ms-2 d-none" role="status" id="listaLoader">
-                            <span class="visually-hidden">Carregando...</span>
-                        </div>
-                    </h2>
-                    <div>
-                        <button id="btnRecarregarLista" class="btn btn-outline-primary">
-                            <i class="bi bi-arrow-clockwise"></i> Atualizar Lista
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="row" id="listaPagamentos">
-                    <!-- Lista de pagamentos será carregada aqui dinamicamente -->
-                </div>
+      <!-- Container de alertas -->
+      <div class="alert-container"></div>
+
+      <!-- Tabs de navegação -->
+      <ul class="nav nav-tabs" id="pagamentoTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link active"
+            id="lista-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#lista"
+            type="button"
+            role="tab"
+            aria-controls="lista"
+            aria-selected="true"
+          >
+            <i class="bi bi-list-ul"></i> Lista de Pagamentos
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link"
+            id="cadastro-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#cadastro"
+            type="button"
+            role="tab"
+            aria-controls="cadastro"
+            aria-selected="false"
+          >
+            <i class="bi bi-plus-circle"></i> Novo Pagamento
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link"
+            id="detalhes-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#detalhes"
+            type="button"
+            role="tab"
+            aria-controls="detalhes"
+            aria-selected="false"
+          >
+            <i class="bi bi-info-circle"></i> Detalhes do Pagamento
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link"
+            id="simulacao-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#simulacao"
+            type="button"
+            role="tab"
+            aria-controls="simulacao"
+            aria-selected="false"
+          >
+            <i class="bi bi-currency-exchange"></i> Simulação de Pagamento
+          </button>
+        </li>
+      </ul>
+
+      <!-- Conteúdo das Tabs -->
+      <div
+        class="tab-content border border-top-0 rounded-bottom p-4"
+        id="pagamentoTabsContent"
+      >
+        <!-- Tab Lista -->
+        <div
+          class="tab-pane fade show active"
+          id="lista"
+          role="tabpanel"
+          aria-labelledby="lista-tab"
+        >
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2>
+              Listagem de Pagamentos
+              <div
+                class="spinner-border spinner-border-sm text-primary ms-2 d-none"
+                role="status"
+                id="listaLoader"
+              >
+                <span class="visually-hidden">Carregando...</span>
+              </div>
+            </h2>
+            <div>
+              <button id="btnRecarregarLista" class="btn btn-outline-primary">
+                <i class="bi bi-arrow-clockwise"></i> Atualizar Lista
+              </button>
             </div>
-            
-            <!-- Tab Cadastro -->
-            <div class="tab-pane fade" id="cadastro" role="tabpanel" aria-labelledby="cadastro-tab">
-                <h2 id="formTitle">Registrar Novo Pagamento</h2>
-                
-                <form id="formPagamento" class="mt-4 needs-validation" novalidate>
-                    <input type="hidden" id="pagamentoId">
-                    
-                    <!-- Alert de erro -->
-                    <div class="alert alert-danger d-none" id="formErrorArea" role="alert"></div>
-                    
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="bookingId" class="form-label required-field">Reserva (ID)*</label>
-                            <div class="input-group">
-                                <input type="text" class="form-control" id="bookingId" required placeholder="ID da reserva">
-                                <button class="btn btn-outline-primary" type="button" id="btnBuscarReserva">Buscar</button>
-                            </div>
-                            <div class="invalid-feedback">
-                                Por favor, informe o ID da reserva.
-                            </div>
-                        </div>
-                        
-                        <div class="col-md-6">
-                            <label for="clienteNome" class="form-label">Cliente</label>
-                            <input type="text" class="form-control" id="clienteNome" disabled readonly>
-                        </div>
-                    </div>
-                    
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="valor" class="form-label required-field">Valor*</label>
-                            <div class="input-group">
-                                <span class="input-group-text">$</span>
-                                <input type="number" class="form-control" id="valor" step="0.01" min="0.01" required placeholder="Valor do pagamento">
-                            </div>
-                            <div class="invalid-feedback">
-                                Por favor, informe um valor válido.
-                            </div>
-                        </div>
-                        
-                        <div class="col-md-6">
-                            <label for="moedaId" class="form-label required-field">Moeda*</label>
-                            <select class="form-select" id="moedaId" required>
-                                <option value="" selected disabled>Selecione a moeda</option>
-                                <!-- Opções de moeda serão carregadas dinamicamente -->
-                            </select>
-                            <div class="invalid-feedback">
-                                Por favor, selecione a moeda.
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="metodoPagamento" class="form-label required-field">Método de Pagamento*</label>
-                            <select class="form-select" id="metodoPagamento" required>
-                                <option value="" selected disabled>Selecione o método</option>
-                                <option value="CARTAO_CREDITO">Cartão de Crédito</option>
-                                <option value="TRANSFERENCIA_BANCARIA">Transferência Bancária</option>
-                                <option value="CRIPTOMOEDA">Criptomoeda</option>
-                                <option value="OUTRO">Outro</option>
-                            </select>
-                            <div class="invalid-feedback">
-                                Por favor, selecione o método de pagamento.
-                            </div>
-                        </div>
-                        
-                        <div class="col-md-6">
-                            <label for="status" class="form-label required-field">Status*</label>
-                            <select class="form-select" id="status" required>
-                                <option value="" selected disabled>Selecione o status</option>
-                                <option value="PENDENTE">Pendente</option>
-                                <option value="PROCESSANDO">Processando</option>
-                                <option value="CONFIRMADO">Confirmado</option>
-                                <option value="FALHOU">Falhou</option>
-                                <option value="CANCELADO">Cancelado</option>
-                            </select>
-                            <div class="invalid-feedback">
-                                Por favor, selecione o status do pagamento.
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="row mb-3">
-                        <div class="col-12">
-                            <label for="observacoes" class="form-label">Observações</label>
-                            <textarea class="form-control" id="observacoes" rows="3" placeholder="Informações adicionais sobre o pagamento"></textarea>
-                        </div>
-                    </div>
-                    
-                    <div class="text-end mt-4">
-                        <button type="button" id="btnCancelar" class="btn btn-outline-secondary me-2">Cancelar</button>
-                        <button type="submit" id="btnSalvar" class="btn btn-primary">Salvar</button>
-                    </div>
-                </form>
-            </div>
-            
-            <!-- Tab Detalhes -->
-            <div class="tab-pane fade" id="detalhes" role="tabpanel" aria-labelledby="detalhes-tab">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h2>
-                        Detalhes do Pagamento
-                        <div class="spinner-border spinner-border-sm text-primary ms-2 d-none" role="status" id="detalhesLoader">
-                            <span class="visually-hidden">Carregando...</span>
-                        </div>
-                    </h2>
-                    <div>
-                        <button id="btnEditar" class="btn btn-primary me-2">
-                            <i class="bi bi-pencil"></i> Editar
-                        </button>
-                        <button id="btnExcluir" class="btn btn-danger">
-                            <i class="bi bi-trash"></i> Excluir
-                        </button>
-                    </div>
-                </div>
-                
-                <div id="detalhesPagamento" class="card">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <h5 class="text-muted">ID do Pagamento</h5>
-                                <p id="detalhesPagamentoId" class="h5"></p>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <h5 class="text-muted">Status</h5>
-                                <p id="detalhesStatus" class="h5"></p>
-                            </div>
-                        </div>
-                        
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <h5 class="text-muted">Reserva</h5>
-                                <p id="detalhesBookingId" class="h5"></p>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <h5 class="text-muted">Cliente</h5>
-                                <p id="detalhesCliente" class="h5"></p>
-                            </div>
-                        </div>
-                        
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <h5 class="text-muted">Valor</h5>
-                                <p id="detalhesValor" class="h5"></p>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <h5 class="text-muted">Moeda</h5>
-                                <p id="detalhesMoeda" class="h5"></p>
-                            </div>
-                        </div>
-                        
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <h5 class="text-muted">Método de Pagamento</h5>
-                                <p id="detalhesMetodoPagamento" class="h5"></p>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <h5 class="text-muted">Data de Criação</h5>
-                                <p id="detalhesDataCriacao" class="h5"></p>
-                            </div>
-                        </div>
-                        
-                        <div class="row">
-                            <div class="col-12 mb-3">
-                                <h5 class="text-muted">Observações</h5>
-                                <p id="detalhesObservacoes" class="h5"></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Tab Simulação -->
-            <div class="tab-pane fade" id="simulacao" role="tabpanel" aria-labelledby="simulacao-tab">
-                <h2>Simulação de Pagamento</h2>
-                <p class="lead">Utilize esta ferramenta para simular um processamento de pagamento com serviço externo.</p>
-                
-                <form id="formSimulacao" class="mt-4 needs-validation" novalidate>
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="simBookingId" class="form-label required-field">Reserva (ID)*</label>
-                            <input type="text" class="form-control" id="simBookingId" required placeholder="ID da reserva">
-                            <div class="invalid-feedback">
-                                Por favor, informe o ID da reserva.
-                            </div>
-                        </div>
-                        
-                        <div class="col-md-6">
-                            <label for="simValor" class="form-label required-field">Valor*</label>
-                            <div class="input-group">
-                                <span class="input-group-text">$</span>
-                                <input type="number" class="form-control" id="simValor" step="0.01" min="0.01" required placeholder="Valor do pagamento">
-                            </div>
-                            <div class="invalid-feedback">
-                                Por favor, informe um valor válido.
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="simMoedaCodigo" class="form-label required-field">Moeda*</label>
-                            <select class="form-select" id="simMoedaCodigo" required>
-                                <option value="" selected disabled>Selecione a moeda</option>
-                                <option value="USD">USD - Dólar Americano</option>
-                                <option value="EUR">EUR - Euro</option>
-                                <option value="BTC">BTC - Bitcoin</option>
-                                <option value="ETH">ETH - Ethereum</option>
-                                <option value="BRL">BRL - Real Brasileiro</option>
-                            </select>
-                            <div class="invalid-feedback">
-                                Por favor, selecione a moeda.
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="text-end mt-4">
-                        <button type="submit" class="btn btn-primary">Simular Pagamento</button>
-                    </div>
-                </form>
-                
-                <!-- Resultado da Simulação -->
-                <div id="resultadoSimulacao" class="card mt-4" style="display: none;">
-                    <div class="card-header bg-light">
-                        <h3 class="card-title h5 mb-0">Resultado da Simulação</h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <h5>Status</h5>
-                                <p id="resultStatus" class="font-weight-bold"></p>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <h5>ID da Transação</h5>
-                                <p id="resultTransactionId" class="font-weight-bold"></p>
-                            </div>
-                        </div>
-                        
-                        <div class="alert" id="resultMensagem">
-                        </div>
-                    </div>
-                    <div class="card-footer text-end">
-                        <button id="btnNovaSimulacao" class="btn btn-outline-primary">Nova Simulação</button>
-                    </div>
-                </div>
-            </div>
+          </div>
+
+          <div class="row" id="listaPagamentos">
+            <!-- Lista de pagamentos será carregada aqui dinamicamente -->
+          </div>
         </div>
+
+        <!-- Tab Cadastro -->
+        <div
+          class="tab-pane fade"
+          id="cadastro"
+          role="tabpanel"
+          aria-labelledby="cadastro-tab"
+        >
+          <h2 id="formTitle">Registrar Novo Pagamento</h2>
+
+          <form id="formPagamento" class="mt-4 needs-validation" novalidate>
+            <input type="hidden" id="pagamentoId" />
+
+            <!-- Alert de erro -->
+            <div
+              class="alert alert-danger d-none"
+              id="formErrorArea"
+              role="alert"
+            ></div>
+
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="bookingId" class="form-label required-field"
+                  >Reserva (ID)*</label
+                >
+                <div class="input-group">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="bookingId"
+                    required
+                    placeholder="ID da reserva"
+                  />
+                  <button
+                    class="btn btn-outline-primary"
+                    type="button"
+                    id="btnBuscarReserva"
+                  >
+                    Buscar
+                  </button>
+                </div>
+                <div class="invalid-feedback">
+                  Por favor, informe o ID da reserva.
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <label for="clienteNome" class="form-label">Cliente</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="clienteNome"
+                  disabled
+                  readonly
+                />
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="valor" class="form-label required-field"
+                  >Valor*</label
+                >
+                <div class="input-group">
+                  <span class="input-group-text">$</span>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="valor"
+                    step="0.01"
+                    min="0.01"
+                    required
+                    placeholder="Valor do pagamento"
+                  />
+                </div>
+                <div class="invalid-feedback">
+                  Por favor, informe um valor válido.
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <label for="moedaId" class="form-label required-field"
+                  >Moeda*</label
+                >
+                <select class="form-select" id="moedaId" required>
+                  <option value="" selected disabled>Selecione a moeda</option>
+                  <!-- Opções de moeda serão carregadas dinamicamente -->
+                </select>
+                <div class="invalid-feedback">
+                  Por favor, selecione a moeda.
+                </div>
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="status" class="form-label required-field"
+                  >Status*</label
+                >
+                <select class="form-select" id="status" required>
+                  <option value="" selected disabled>Selecione o status</option>
+                  <option value="PENDENTE">Pendente</option>
+                  <option value="PROCESSANDO">Processando</option>
+                  <option value="CONFIRMADO">Confirmado</option>
+                  <option value="FALHOU">Falhou</option>
+                  <option value="CANCELADO">Cancelado</option>
+                </select>
+                <div class="invalid-feedback">
+                  Por favor, selecione o status do pagamento.
+                </div>
+              </div>
+            </div>
+
+            <div class="text-end mt-4">
+              <button
+                type="button"
+                id="btnCancelar"
+                class="btn btn-outline-secondary me-2"
+              >
+                Cancelar
+              </button>
+              <button type="submit" id="btnSalvar" class="btn btn-primary">
+                Salvar
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Tab Detalhes -->
+        <div
+          class="tab-pane fade"
+          id="detalhes"
+          role="tabpanel"
+          aria-labelledby="detalhes-tab"
+        >
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>
+              Detalhes do Pagamento
+              <div
+                class="spinner-border spinner-border-sm text-primary ms-2 d-none"
+                role="status"
+                id="detalhesLoader"
+              >
+                <span class="visually-hidden">Carregando...</span>
+              </div>
+            </h2>
+            <div>
+              <button id="btnPagar" class="btn btn-success me-2" style="display: none;">
+                <i class="bi bi-credit-card"></i> Pagar
+              </button>
+              <button id="btnEditar" class="btn btn-primary me-2">
+                <i class="bi bi-pencil"></i> Editar
+              </button>
+              <button id="btnExcluir" class="btn btn-danger">
+                <i class="bi bi-trash"></i> Excluir
+              </button>
+            </div>
+          </div>
+
+          <div id="detalhesPagamento" class="card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <h5 class="text-muted">ID do Pagamento</h5>
+                  <p id="detalhesPagamentoId" class="h5"></p>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <h5 class="text-muted">Status</h5>
+                  <p id="detalhesStatus" class="h5"></p>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <h5 class="text-muted">Reserva</h5>
+                  <p id="detalhesBookingId" class="h5"></p>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <h5 class="text-muted">Cliente</h5>
+                  <p id="detalhesCliente" class="h5"></p>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <h5 class="text-muted">Valor</h5>
+                  <p id="detalhesValor" class="h5"></p>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <h5 class="text-muted">Moeda</h5>
+                  <p id="detalhesMoeda" class="h5"></p>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <h5 class="text-muted">Data de Criação</h5>
+                  <p id="detalhesDataCriacao" class="h5"></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab Simulação -->
+        <div
+          class="tab-pane fade"
+          id="simulacao"
+          role="tabpanel"
+          aria-labelledby="simulacao-tab"
+        >
+          <h2>Simulação de Pagamento</h2>
+          <p class="lead">
+            Utilize esta ferramenta para simular um processamento de pagamento
+            com serviço externo.
+          </p>
+
+          <form id="formSimulacao" class="mt-4 needs-validation" novalidate>
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="simBookingId" class="form-label required-field"
+                  >Reserva (ID)*</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="simBookingId"
+                  required
+                  placeholder="ID da reserva"
+                />
+                <div class="invalid-feedback">
+                  Por favor, informe o ID da reserva.
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <label for="simValor" class="form-label required-field"
+                  >Valor*</label
+                >
+                <div class="input-group">
+                  <span class="input-group-text">$</span>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="simValor"
+                    step="0.01"
+                    min="0.01"
+                    required
+                    placeholder="Valor do pagamento"
+                  />
+                </div>
+                <div class="invalid-feedback">
+                  Por favor, informe um valor válido.
+                </div>
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="simMoedaCodigo" class="form-label required-field"
+                  >Moeda*</label
+                >
+                <select class="form-select" id="simMoedaCodigo" required>
+                  <option value="" selected disabled>Selecione a moeda</option>
+                  <option value="USD">USD - Dólar Americano</option>
+                  <option value="EUR">EUR - Euro</option>
+                  <option value="BTC">BTC - Bitcoin</option>
+                  <option value="ETH">ETH - Ethereum</option>
+                  <option value="BRL">BRL - Real Brasileiro</option>
+                </select>
+                <div class="invalid-feedback">
+                  Por favor, selecione a moeda.
+                </div>
+              </div>
+            </div>
+
+            <div class="text-end mt-4">
+              <button type="submit" class="btn btn-primary">
+                Simular Pagamento
+              </button>
+            </div>
+          </form>
+
+          <!-- Resultado da Simulação -->
+          <div id="resultadoSimulacao" class="card mt-4" style="display: none">
+            <div class="card-header bg-light">
+              <h3 class="card-title h5 mb-0">Resultado da Simulação</h3>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <h5>Status</h5>
+                  <p id="resultStatus" class="font-weight-bold"></p>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <h5>ID da Transação</h5>
+                  <p id="resultTransactionId" class="font-weight-bold"></p>
+                </div>
+              </div>
+
+              <div class="alert" id="resultMensagem"></div>
+            </div>
+            <div class="card-footer text-end">
+              <button id="btnNovaSimulacao" class="btn btn-outline-primary">
+                Nova Simulação
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Modal de Confirmação -->
-    <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="confirmModalLabel">Confirmação</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
-                </div>
-                <div class="modal-body">
-                    <p id="confirmMessage"></p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-danger" id="btnConfirmAction">Confirmar</button>
-                </div>
-            </div>
+    <div
+      class="modal fade"
+      id="confirmModal"
+      tabindex="-1"
+      aria-labelledby="confirmModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="confirmModalLabel">Confirmação</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Fechar"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p id="confirmMessage"></p>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <button type="button" class="btn btn-danger" id="btnConfirmAction">
+              Confirmar
+            </button>
+          </div>
         </div>
+      </div>
     </div>
 
     <!-- Footer -->
     <footer class="footer mt-5 text-center text-muted">
-        <p>© 2025 AdAstra - Sistema de Gerenciamento de Viagens Espaciais</p>
+      <p>© 2025 AdAstra - Sistema de Gerenciamento de Viagens Espaciais</p>
     </footer>
-    
+
     <!-- Bootstrap JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Script da aplicação -->
     <script src="js/cadastroPagamento.js"></script>
-</body>
+  </body>
 </html>

@@ -176,7 +176,8 @@ function exibirReservas() {
                 <div class="card-body">
                     <h5 class="card-title">${client ? client.nome : 'Cliente não encontrado'}</h5>
                     <h6 class="card-subtitle mb-2 text-muted">${pkg ? pkg.nome : 'Pacote não encontrado'}</h6>                    <p class="card-text">
-                        <strong>Valor Total:</strong> ${formatarMoeda(booking.valor_total)}<br>
+                    <strong>Id da Reserva:</strong> ${booking.id}<br>    
+                    <strong>Valor Total:</strong> ${formatarMoeda(booking.valor_total)}<br>
                         <strong>Status:</strong> <span class="badge bg-${getStatusColor(booking.status)}">${booking.status}</span>
                     </p><button class="btn btn-primary btn-sm" onclick="verDetalhes('${booking.id}')">
                         Ver Detalhes
