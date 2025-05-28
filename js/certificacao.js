@@ -260,13 +260,24 @@ async function fetchAPI(endpoint, options = {}) {
 // Funções para gerenciamento de clientes e certificações
 async function carregarClientes() {
     try {
-        console.log("Iniciando carregamento de clientes...");
         exibirLoader(elements.loaders.lista, true);
         elements.clientes.container.innerHTML = '';
         
         // Carregar todos os clientes
         const clientes = await fetchAPI('/clientes/');
-        console.log("Clientes carregados:", clientes);
+        
+        // Atualizar status de certificação para cada cliente
+        for (const cliente of clientes) {
+            try {
+                const certificacoes = await fetchAPI(`/certifications/${cliente.id}`);
+                const novoStatus = calcularStatusCertificacao(certificacoes);
+                cliente.certificacao_status = novoStatus;
+            } catch (error) {
+                console.warn(`Erro ao carregar certificações do cliente ${cliente.id}:`, error);
+                cliente.certificacao_status = 'Pendente';
+            }
+        }
+        
         clientesData = clientes;
         
         if (clientes.length === 0) {
@@ -558,9 +569,9 @@ function renderizarHistorico(certificacoes) {
     // Renderizar linhas da tabela
     certificacoesPagina.forEach(certificacao => {
         const tr = document.createElement('tr');
-        
-        // Formatar datas
-        const dataEmissao = certificacao.data_certificacao ? new Date(certificacao.data_certificacao).toLocaleDateString('pt-BR') : '-';
+          // Formatar datas
+        const dataEmissao = certificacao.data_emissao ? new Date(certificacao.data_emissao).toLocaleDateString('pt-BR') :
+                           certificacao.data_certificacao ? new Date(certificacao.data_certificacao).toLocaleDateString('pt-BR') : '-';
         const dataValidade = certificacao.data_validade ? new Date(certificacao.data_validade).toLocaleDateString('pt-BR') : 'Sem validade';
 
         // Se precisar verificar expiração:
@@ -629,10 +640,10 @@ function renderizarHistorico(certificacoes) {
     renderizarPaginacao(totalPaginas, paginaAtualHistorico, elements.historico.paginacao, mudarPaginaHistorico);
 }
 
-function exibirDetalhes(certificacao, nomeCliente) {
-    // Formatar datas        
-    const dataEmissao = certificacao.data_certificacao ? new Date(certificacao.data_certificacao).toLocaleDateString('pt-BR') : '-';
-    const dataValidade = 'Sem validade';
+function exibirDetalhes(certificacao, nomeCliente) {    // Formatar datas        
+    const dataEmissao = certificacao.data_emissao ? new Date(certificacao.data_emissao).toLocaleDateString('pt-BR') : 
+                       certificacao.data_certificacao ? new Date(certificacao.data_certificacao).toLocaleDateString('pt-BR') : '-';
+    const dataValidade = certificacao.data_validade ? new Date(certificacao.data_validade).toLocaleDateString('pt-BR') : 'Sem validade';
     
     // Status formatado
     const statusHTML = certificacao.concluida ? 
@@ -642,9 +653,8 @@ function exibirDetalhes(certificacao, nomeCliente) {
     elements.modal.detalhes.cliente.textContent = nomeCliente;
     elements.modal.detalhes.tipoCertificacao.textContent = certificacao.descricao || 'Não especificado';
     elements.modal.detalhes.dataEmissao.textContent = dataEmissao;
-    elements.modal.detalhes.dataValidade.textContent = dataValidade;
-    elements.modal.detalhes.entidadeEmissora.textContent = '-';
-    elements.modal.detalhes.numeroCertificado.textContent = '-';
+    elements.modal.detalhes.dataValidade.textContent = dataValidade;    elements.modal.detalhes.entidadeEmissora.textContent = certificacao.entidade_emissora || '-';
+    elements.modal.detalhes.numeroCertificado.textContent = certificacao.numero_certificado || '-';
     elements.modal.detalhes.status.innerHTML = statusHTML;
     elements.modal.detalhes.observacoes.textContent = certificacao.observacoes || 'Sem observações registradas.';
     
@@ -829,12 +839,15 @@ async function handleFormSubmit(event) {
         
         // Obter o valor selecionado de "concluída"
         const concluidaRadio = Array.from(elements.form.concluida).find(radio => radio.checked);
-        const concluida = concluidaRadio ? concluidaRadio.value === 'true' : false;
-          const formData = {
+        const concluida = concluidaRadio ? concluidaRadio.value === 'true' : false;        const formData = {
             cliente_id: elements.form.clienteId.value,
             descricao: tipoCertificacao,
             concluida: concluida,
-            observacoes: elements.form.observacoes.value || null
+            observacoes: elements.form.observacoes.value || null,
+            data_emissao: elements.form.dataEmissao.value || null,
+            data_validade: elements.form.dataValidade.value || null,
+            entidade_emissora: elements.form.entidadeEmissora.value || null,
+            numero_certificado: elements.form.numeroCertificado.value || null
         };
         
         if (isEdicao) {
@@ -1006,4 +1019,25 @@ function formatarStatusCertificacao(status) {
         'Pendente': '<span class="badge bg-danger">Pendente</span>'
     };
     return mapStatus[status] || '<span class="badge bg-secondary">Não Informado</span>';
+}
+
+// Função para calcular o status de certificação baseado nas certificações existentes
+function calcularStatusCertificacao(certificacoes) {
+    if (!certificacoes || certificacoes.length === 0) {
+        return 'Pendente';
+    }
+    
+    // Verificar se há pelo menos uma certificação concluída
+    const temConcluida = certificacoes.some(cert => cert.concluida === true);
+    
+    // Verificar se há certificações em andamento
+    const temEmAndamento = certificacoes.some(cert => cert.concluida === false);
+    
+    if (temConcluida) {
+        return 'Concluída';
+    } else if (temEmAndamento) {
+        return 'Em Andamento';
+    } else {
+        return 'Pendente';
+    }
 }

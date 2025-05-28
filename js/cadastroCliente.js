@@ -414,17 +414,74 @@ async function handleFormSubmit(event) {
 
 async function excluirCliente(clienteId) {
     try {
-        await fetchAPI(`/clientes/${clienteId}`, {
+        console.log(`Tentando excluir cliente com ID: ${clienteId}`);
+        
+        // Verificar se o cliente tem certificações ou outras dependências
+        let certificacoes = [];
+        try {
+            certificacoes = await fetchAPI(`/certifications/${clienteId}`);
+            
+            if (certificacoes && certificacoes.length > 0) {
+                const mensagemAviso = 
+                    `ATENÇÃO: Este cliente possui ${certificacoes.length} certificação(ões) registrada(s):\n\n` +
+                    `${certificacoes.map(cert => `• ${cert.descricao || 'Sem descrição'}`).join('\n')}\n\n` +
+                    `IMPORTANTE: O sistema backend não suporta exclusão automática de certificações.\n` +
+                    `A exclusão pode falhar devido a essas dependências.\n\n` +
+                    `Recomendação: Entre em contato com o administrador do sistema para remover as certificações manualmente primeiro.\n\n` +
+                    `Deseja tentar excluir mesmo assim?`;
+                
+                const confirmarExclusao = confirm(mensagemAviso);
+                
+                if (!confirmarExclusao) {
+                    mostrarAlerta('Exclusão cancelada pelo usuário.', 'info');
+                    return;
+                }
+                
+                mostrarAlerta('Tentando excluir cliente com dependências. Isso pode falhar...', 'warning');
+            }
+        } catch (certError) {
+            console.warn('Erro ao verificar certificações do cliente:', certError);
+            // Continuar com a exclusão mesmo se não conseguir verificar as certificações
+        }
+        
+        const resultado = await fetchAPI(`/clientes/${clienteId}`, {
             method: 'DELETE'
         });
         
-        mostrarAlerta('Cliente excluído com sucesso!');
+        console.log('Resultado da exclusão:', resultado);
+        mostrarAlerta('Cliente excluído com sucesso!', 'success');
         
         // Voltar para a lista e recarregar
         elements.tabs.lista.click();
         await carregarClientes();
+        
     } catch (error) {
         console.error('Erro ao excluir cliente:', error);
+        
+        // Tentar fornecer uma mensagem mais útil baseada no tipo de erro
+        let mensagemErro = '';
+        
+        if (error.message.includes('500') || error.message.includes('Internal Server Error')) {
+            mensagemErro = 'Erro interno do servidor. Possíveis causas:\n\n' +
+                          '• Cliente possui certificações vinculadas\n' +
+                          '• Cliente possui reservas ativas\n' +
+                          '• Problemas de integridade referencial no banco de dados\n\n' +
+                          'Solução: Entre em contato com o administrador do sistema para:\n' +
+                          '1. Verificar e remover dependências manualmente\n' +
+                          '2. Implementar exclusão em cascata no backend';
+        } else if (error.message.includes('404')) {
+            mensagemErro = 'Cliente não encontrado. Pode ter sido excluído por outro usuário.';
+        } else if (error.message.includes('403')) {
+            mensagemErro = 'Acesso negado. Você não tem permissão para excluir este cliente.';
+        } else {
+            mensagemErro = `Erro inesperado: ${error.message}`;
+        }
+        
+        // Usar alert para mensagens longas de erro que precisam ser lidas
+        alert(`Falha ao excluir cliente:\n\n${mensagemErro}`);
+        
+        // E também mostrar um alerta na interface
+        mostrarAlerta('Falha ao excluir cliente. Verifique o console para mais detalhes.', 'danger');
     }
 }
 
