@@ -72,9 +72,29 @@ let filtrosAtivos = {
 
 // Inicialização da aplicação
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM carregado, verificando elementos...');
+    
+    // Verificar se todos os elementos necessários existem
+    const elementosObrigatorios = [
+        'listaClientes',
+        'listaLoader',
+        'paginacao'
+    ];
+    
+    elementosObrigatorios.forEach(id => {
+        const elemento = document.getElementById(id);
+        if (!elemento) {
+            console.error(`Elemento com ID '${id}' não encontrado!`);
+        } else {
+            console.log(`Elemento '${id}' encontrado:`, elemento);
+        }
+    });
+    
     // Definir data padrão como hoje
     const hoje = new Date().toISOString().split('T')[0];
-    elements.form.dataVerificacao.value = hoje;
+    if (elements.form.dataVerificacao) {
+        elements.form.dataVerificacao.value = hoje;
+    }
     
     // Carregar clientes para o select
     carregarClientesSelect();
@@ -238,11 +258,14 @@ async function fetchAPI(endpoint, options = {}) {
 // Funções para gerenciamento de clientes e aprovações médicas
 async function carregarClientes() {
     try {
+        console.log('Iniciando carregamento de clientes...');
         exibirLoader(elements.loaders.lista, true);
         elements.clientes.container.innerHTML = '';
         
         // Carregar todos os clientes
         const clientes = await fetchAPI('/clientes/');
+        console.log('Clientes carregados:', clientes);
+        
         clientesData = clientes;
         
         if (clientes.length === 0) {
@@ -254,10 +277,22 @@ async function carregarClientes() {
                 </div>
             `;
         } else {
-            renderizarClientes(filtrarClientes(clientes));
+            // Reset filtros se necessário
+            if (!filtrosAtivos.status && !filtrosAtivos.nome) {
+                renderizarClientes(clientes);
+            } else {
+                renderizarClientes(filtrarClientes(clientes));
+            }
         }
     } catch (error) {
         console.error('Erro ao carregar clientes:', error);
+        elements.clientes.container.innerHTML = `
+            <div class="col-12 text-center">
+                <div class="alert alert-danger">
+                    Erro ao carregar clientes: ${error.message}
+                </div>
+            </div>
+        `;
     } finally {
         exibirLoader(elements.loaders.lista, false);
     }
@@ -290,11 +325,20 @@ function aplicarFiltros() {
 }
 
 function renderizarClientes(clientes) {
+    console.log('Renderizando clientes:', clientes);
     elements.clientes.container.innerHTML = '';
+    
+    // Verificar se o container existe
+    if (!elements.clientes.container) {
+        console.error('Container de clientes não encontrado!');
+        return;
+    }
     
     // Calcular paginação
     const totalClientes = clientes.length;
     const totalPaginas = Math.ceil(totalClientes / itensPorPagina);
+    
+    console.log(`Total de clientes: ${totalClientes}, Total de páginas: ${totalPaginas}`);
     
     // Ajustar página atual se necessário
     if (paginaAtualClientes > totalPaginas && totalPaginas > 0) {
@@ -306,6 +350,8 @@ function renderizarClientes(clientes) {
     const fim = Math.min(inicio + itensPorPagina, totalClientes);
     const clientesDaPagina = clientes.slice(inicio, fim);
     
+    console.log(`Exibindo clientes ${inicio + 1} a ${fim} de ${totalClientes}`);
+    
     if (clientesDaPagina.length === 0) {
         elements.clientes.container.innerHTML = `
             <div class="col-12 text-center">
@@ -315,31 +361,51 @@ function renderizarClientes(clientes) {
             </div>
         `;
         // Ocultar paginação
-        elements.clientes.paginacao.style.display = 'none';
+        if (elements.clientes.paginacao) {
+            elements.clientes.paginacao.style.display = 'none';
+        }
         return;
     }
     
     // Mostrar paginação se necessário
-    elements.clientes.paginacao.style.display = totalPaginas > 1 ? 'flex' : 'none';
+    if (elements.clientes.paginacao) {
+        elements.clientes.paginacao.style.display = totalPaginas > 1 ? 'flex' : 'none';
+    }
     
     // Renderizar cards de clientes
-    clientesDaPagina.forEach(cliente => {
+    clientesDaPagina.forEach((cliente, index) => {
+        console.log(`Renderizando cliente ${index + 1}:`, cliente);
+        
         const clienteCard = document.createElement('div');
         clienteCard.className = 'col-md-4 mb-4';
         
-        const dataNascimento = new Date(cliente.data_nascimento).toLocaleDateString('pt-BR');
-        const statusMedicoHTML = formatarStatusMedico(cliente.status_medico);
+        // Verificar se as propriedades existem
+        const nome = cliente.nome || 'Nome não informado';
+        const email = cliente.email || 'Email não informado';
+        const telefone = cliente.telefone || 'Telefone não informado';
+        const statusMedico = cliente.status_medico || 'Pendente';
+        
+        let dataNascimento = 'Data não informada';
+        if (cliente.data_nascimento) {
+            try {
+                dataNascimento = new Date(cliente.data_nascimento).toLocaleDateString('pt-BR');
+            } catch (e) {
+                console.warn('Erro ao formatar data de nascimento:', e);
+            }
+        }
+        
+        const statusMedicoHTML = formatarStatusMedico(statusMedico);
         
         clienteCard.innerHTML = `
             <div class="card cliente-card h-100 shadow-sm">
                 <div class="card-header bg-primary text-white d-flex align-items-center">
                     <i class="bi bi-person-circle me-2"></i>
-                    <h5 class="card-title mb-0">${cliente.nome}</h5>
+                    <h5 class="card-title mb-0">${nome}</h5>
                 </div>
                 <div class="card-body">
-                    <p class="mb-2"><i class="bi bi-envelope text-muted me-2"></i> ${cliente.email}</p>
+                    <p class="mb-2"><i class="bi bi-envelope text-muted me-2"></i> ${email}</p>
                     <p class="mb-2"><i class="bi bi-calendar text-muted me-2"></i> ${dataNascimento}</p>
-                    <p class="mb-2"><i class="bi bi-telephone text-muted me-2"></i> ${cliente.telefone}</p>
+                    <p class="mb-2"><i class="bi bi-telephone text-muted me-2"></i> ${telefone}</p>
                     <p class="mb-0"><i class="bi bi-heart-pulse text-muted me-2"></i> Status Médico: ${statusMedicoHTML}</p>
                 </div>
                 <div class="card-footer bg-white border-top-0">
@@ -347,7 +413,7 @@ function renderizarClientes(clientes) {
                         <button class="btn btn-sm btn-outline-primary btn-historico" data-id="${cliente.id}">
                             <i class="bi bi-clock-history"></i> Histórico
                         </button>
-                        <button class="btn btn-sm btn-primary btn-avaliar" data-id="${cliente.id}" data-nome="${cliente.nome}">
+                        <button class="btn btn-sm btn-primary btn-avaliar" data-id="${cliente.id}" data-nome="${nome}">
                             <i class="bi bi-clipboard-check"></i> Avaliar
                         </button>
                     </div>
@@ -359,20 +425,30 @@ function renderizarClientes(clientes) {
         
         // Adicionar event listeners aos botões
         const btnHistorico = clienteCard.querySelector('.btn-historico');
-        btnHistorico.addEventListener('click', () => {
-            elements.tabs.historico.click();
-            elements.filtros.clienteHistorico.value = cliente.nome;
-            buscarHistorico();
-        });
+        if (btnHistorico) {
+            btnHistorico.addEventListener('click', () => {
+                elements.tabs.historico.click();
+                if (elements.filtros.clienteHistorico) {
+                    elements.filtros.clienteHistorico.value = nome;
+                }
+                buscarHistorico();
+            });
+        }
         
         const btnAvaliar = clienteCard.querySelector('.btn-avaliar');
-        btnAvaliar.addEventListener('click', () => {
-            prepararNovaAvaliacao(cliente.id, cliente.nome);
-        });
+        if (btnAvaliar) {
+            btnAvaliar.addEventListener('click', () => {
+                prepararNovaAvaliacao(cliente.id, nome);
+            });
+        }
     });
     
+    console.log(`Cards renderizados: ${clientesDaPagina.length}`);
+    
     // Atualizar paginação
-    renderizarPaginacao(totalPaginas, paginaAtualClientes, elements.clientes.paginacao, mudarPaginaClientes);
+    if (elements.clientes.paginacao) {
+        renderizarPaginacao(totalPaginas, paginaAtualClientes, elements.clientes.paginacao, mudarPaginaClientes);
+    }
 }
 
 function renderizarPaginacao(totalPaginas, paginaAtual, elementoPaginacao, callbackPagina) {
@@ -750,7 +826,7 @@ async function handleFormSubmit(event) {
         // Resetar formulário e recarregar dados
         resetForm();
         await carregarHistorico();
-        await carregarClientes();
+        await carregarClientes(); // Isso irá recarregar a lista de clientes com o status atualizado
         
         // Voltar para lista de clientes
         elements.tabs.clientes.click();
