@@ -1,283 +1,406 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AdAstra - Gestão de Pacotes</title>
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
     <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+    />
     <!-- Estilos personalizados -->
-    <link rel="stylesheet" href="css/styles.css">
-</head>
-<body>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container">
-            <a class="navbar-brand" href="index.html">AdAstra</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.html">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="cadastroCliente.html">Clientes</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="cadastroPacote.html">Pacotes</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="cadastroViagem.html">Viagens</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="cadastroReserva.html">Reservas</a>
-                    </li>                    <li class="nav-item">
-                        <a class="nav-link" href="aprovacaoMedica.html">Aprovação Médica</a>
-                    </li>                    <li class="nav-item">
-                        <a class="nav-link" href="certificacao.html">Certificações</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="cadastroImpostos.html">Impostos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="cadastroPagamento.html">Pagamentos</a>
-                    </li>
-                </ul>
-            </div>
+      <div class="container">
+        <a class="navbar-brand" href="index.html">AdAstra</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="cadastroCliente.html">Clientes</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="cadastroPacote.html">Pacotes</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="cadastroViagem.html">Viagens</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="cadastroReserva.html">Reservas</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="aprovacaoMedica.html"
+                >Aprovação Médica</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="certificacao.html">Certificações</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="cadastroImpostos.html">Impostos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="cadastroPagamento.html">Pagamentos</a>
+            </li>
+          </ul>
         </div>
+      </div>
     </nav>
 
     <div class="container mt-4">
-        <!-- Cabeçalho -->
-        <header class="text-center mb-5">
-            <h1>Gestão de Pacotes</h1>
-            <p class="lead">Administre os pacotes de viagens espaciais disponíveis para venda</p>
-        </header>
+      <!-- Cabeçalho -->
+      <header class="text-center mb-5">
+        <h1>Gestão de Pacotes</h1>
+        <p class="lead">
+          Administre os pacotes de viagens espaciais disponíveis para venda
+        </p>
+      </header>
 
-        <!-- Abas de navegação -->
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
-            <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="lista-tab" data-bs-toggle="tab" data-bs-target="#lista" type="button" role="tab">
-                    <i class="bi bi-list-ul"></i> Lista de Pacotes
+      <!-- Abas de navegação -->
+      <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link active"
+            id="lista-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#lista"
+            type="button"
+            role="tab"
+          >
+            <i class="bi bi-list-ul"></i> Lista de Pacotes
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link"
+            id="cadastro-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#cadastro"
+            type="button"
+            role="tab"
+          >
+            <i class="bi bi-plus-circle"></i> Novo Pacote
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link"
+            id="detalhes-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#detalhes"
+            type="button"
+            role="tab"
+          >
+            <i class="bi bi-info-circle"></i> Detalhes do Pacote
+          </button>
+        </li>
+      </ul>
+
+      <!-- Conteúdo das abas -->
+      <div class="tab-content mt-4" id="myTabContent">
+        <!-- Aba de listagem -->
+        <div class="tab-pane fade show active" id="lista" role="tabpanel">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Lista de Pacotes</h2>
+            <button class="btn btn-primary" id="btnRecarregarLista">
+              <i class="bi bi-arrow-clockwise"></i> Recarregar
+            </button>
+          </div>
+
+          <!-- Campo de pesquisa -->
+          <div class="row mb-4">
+            <div class="col-md-6">
+              <div class="input-group">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="searchPacote"
+                  placeholder="Pesquisar pacotes..."
+                />
+                <button
+                  class="btn btn-outline-secondary"
+                  type="button"
+                  id="btnSearchPacote"
+                >
+                  <i class="bi bi-search"></i>
                 </button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="cadastro-tab" data-bs-toggle="tab" data-bs-target="#cadastro" type="button" role="tab">
-                    <i class="bi bi-plus-circle"></i> Novo Pacote
+              </div>
+            </div>
+            <div class="col-md-3">
+              <select class="form-select" id="filterTipo">
+                <option value="">Todos os tipos</option>
+                <option value="Suborbital">Suborbital</option>
+                <option value="Orbital">Orbital</option>
+                <option value="Estação Espacial">Estação Espacial</option>
+                <option value="Lunar">Lunar</option>
+                <option value="Interplanetário">Interplanetário</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <select class="form-select" id="filterDisponibilidade">
+                <option value="">Todos</option>
+                <option value="true">Disponíveis</option>
+                <option value="false">Indisponíveis</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Controles de ordenação -->
+          <div class="row mb-4">
+            <div class="col-md-12">
+              <div
+                class="btn-group"
+                role="group"
+                aria-label="Ordenação de pacotes"
+              >
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary"
+                  data-sort="nome"
+                >
+                  <i class="bi bi-sort-alpha-down"></i> Nome
                 </button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="detalhes-tab" data-bs-toggle="tab" data-bs-target="#detalhes" type="button" role="tab">
-                    <i class="bi bi-info-circle"></i> Detalhes do Pacote
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary"
+                  data-sort="preco"
+                >
+                  <i class="bi bi-sort-numeric-down"></i> Preço
                 </button>
-            </li>
-        </ul>
-
-        <!-- Conteúdo das abas -->
-        <div class="tab-content mt-4" id="myTabContent">
-            <!-- Aba de listagem -->
-            <div class="tab-pane fade show active" id="lista" role="tabpanel">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h2>Lista de Pacotes</h2>
-                    <button class="btn btn-primary" id="btnRecarregarLista">
-                        <i class="bi bi-arrow-clockwise"></i> Recarregar
-                    </button>
-                </div>
-                
-                <!-- Campo de pesquisa -->
-                <div class="row mb-4">
-                    <div class="col-md-6">
-                        <div class="input-group">
-                            <input type="text" class="form-control" id="searchPacote" placeholder="Pesquisar pacotes...">
-                            <button class="btn btn-outline-secondary" type="button" id="btnSearchPacote">
-                                <i class="bi bi-search"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <select class="form-select" id="filterTipo">
-                            <option value="">Todos os tipos</option>
-                            <option value="Suborbital">Suborbital</option>
-                            <option value="Orbital">Orbital</option>
-                            <option value="Estação Espacial">Estação Espacial</option>
-                            <option value="Lunar">Lunar</option>
-                            <option value="Interplanetário">Interplanetário</option>
-                        </select>
-                    </div>
-                    <div class="col-md-3">
-                        <select class="form-select" id="filterDisponibilidade">
-                            <option value="">Todos</option>
-                            <option value="true">Disponíveis</option>
-                            <option value="false">Indisponíveis</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <!-- Controles de ordenação -->
-                <div class="row mb-4">
-                    <div class="col-md-12">
-                        <div class="btn-group" role="group" aria-label="Ordenação de pacotes">
-                            <button type="button" class="btn btn-outline-secondary" data-sort="nome">
-                                <i class="bi bi-sort-alpha-down"></i> Nome
-                            </button>
-                            <button type="button" class="btn btn-outline-secondary" data-sort="preco">
-                                <i class="bi bi-sort-numeric-down"></i> Preço
-                            </button>
-                            <button type="button" class="btn btn-outline-secondary" data-sort="tipo">
-                                <i class="bi bi-sort-alpha-down"></i> Tipo
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Loader -->
-                <div class="text-center mb-4">
-                    <div class="spinner-border text-primary custom-loader" id="listaLoader" role="status">
-                        <span class="visually-hidden">Carregando...</span>
-                    </div>
-                </div>
-                
-                <!-- Lista de pacotes -->
-                <div class="row" id="listaPacotes"></div>
-                
-                <!-- Controles de paginação -->
-                <div class="d-flex justify-content-center mt-4">
-                    <nav aria-label="Navegação de pacotes">
-                        <ul class="pagination" id="paginacaoPacotes">
-                            <!-- Gerado dinamicamente -->
-                        </ul>
-                    </nav>
-                </div>
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary"
+                  data-sort="tipo"
+                >
+                  <i class="bi bi-sort-alpha-down"></i> Tipo
+                </button>
+              </div>
             </div>
+          </div>
 
-            <!-- Aba de cadastro -->
-            <div class="tab-pane fade" id="cadastro" role="tabpanel">
-                <h2 id="formTitle">Novo Pacote</h2>
-                
-                <form id="formPacote" class="mt-4">
-                    <input type="hidden" id="pacoteId">
-                    
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id="nome" placeholder="Nome do Pacote" required>
-                                <label for="nome" class="required-field">Nome do Pacote</label>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-floating mb-3">
-                                <select class="form-select" id="tipo" required>
-                                    <option value="">Selecione um tipo</option>
-                                    <option value="Suborbital">Suborbital</option>
-                                    <option value="Orbital">Orbital</option>
-                                    <option value="Estação Espacial">Estação Espacial</option>
-                                    <option value="Lunar">Lunar</option>
-                                    <option value="Interplanetário">Interplanetário</option>
-                                </select>
-                                <label for="tipo" class="required-field">Tipo</label>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-floating mb-3">
-                                <input type="number" class="form-control" id="preco" placeholder="Preço" min="0" step="0.01" required>
-                                <label for="preco" class="required-field">Preço (R$)</label>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-check form-switch mb-3 mt-3">
-                                <input class="form-check-input" type="checkbox" id="disponibilidade" checked>
-                                <label class="form-check-label" for="disponibilidade">Disponível para venda</label>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="form-floating mb-3">
-                        <textarea class="form-control" id="descricao" placeholder="Descrição" style="height: 100px" required></textarea>
-                        <label for="descricao" class="required-field">Descrição</label>
-                    </div>
-                    
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
-                        <button type="button" class="btn btn-secondary me-md-2" id="btnCancelar">Cancelar</button>
-                        <button type="submit" class="btn btn-primary" id="btnSalvar">Salvar</button>
-                    </div>
-                </form>
+          <!-- Loader -->
+          <div class="text-center mb-4">
+            <div
+              class="spinner-border text-primary custom-loader"
+              id="listaLoader"
+              role="status"
+            >
+              <span class="visually-hidden">Carregando...</span>
             </div>
+          </div>
 
-            <!-- Aba de detalhes -->
-            <div class="tab-pane fade" id="detalhes" role="tabpanel">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h2>Detalhes do Pacote</h2>
-                    <div>
-                        <button class="btn btn-outline-primary me-2" id="btnEditar">
-                            <i class="bi bi-pencil"></i> Editar
-                        </button>
-                        <button class="btn btn-outline-danger" id="btnExcluir">
-                            <i class="bi bi-trash"></i> Excluir
-                        </button>
-                    </div>
-                </div>
-                
-                <!-- Loader -->
-                <div class="text-center mb-4">
-                    <div class="spinner-border text-primary custom-loader" id="detalhesLoader" role="status">
-                        <span class="visually-hidden">Carregando...</span>
-                    </div>
-                </div>
-                
-                <!-- Card com detalhes do pacote -->
-                <div class="card" id="detalhesPacote">
-                    <div class="card-header bg-primary text-white">
-                        <h3 class="card-title mb-0" id="detalhesTitulo">Informações do Pacote</h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <h5><i class="bi bi-rocket"></i> Tipo</h5>
-                                <p id="detalhesTipo"></p>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <h5><i class="bi bi-currency-dollar"></i> Preço</h5>
-                                <p id="detalhesPreco"></p>
-                            </div>
-                            <div class="col-12 mb-3">
-                                <h5><i class="bi bi-check-circle"></i> Disponibilidade</h5>
-                                <p id="detalhesDisponibilidade"></p>
-                            </div>
-                            <div class="col-12">
-                                <h5><i class="bi bi-info-circle"></i> Descrição</h5>
-                                <p id="detalhesDescricao"></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>            
-            </div>
+          <!-- Lista de pacotes -->
+          <div class="row" id="listaPacotes"></div>
+
+          <!-- Controles de paginação -->
+          <div class="d-flex justify-content-center mt-4">
+            <nav aria-label="Navegação de pacotes">
+              <ul class="pagination" id="paginacaoPacotes">
+                <!-- Gerado dinamicamente -->
+              </ul>
+            </nav>
+          </div>
         </div>
+
+        <!-- Aba de cadastro -->
+        <div class="tab-pane fade" id="cadastro" role="tabpanel">
+          <h2 id="formTitle">Novo Pacote</h2>
+
+          <form id="formPacote" class="mt-4">
+            <input type="hidden" id="pacoteId" />
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-floating mb-3">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="nome"
+                    placeholder="Nome do Pacote"
+                    required
+                  />
+                  <label for="nome" class="required-field"
+                    >Nome do Pacote</label
+                  >
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-floating mb-3">
+                  <select class="form-select" id="tipo" required>
+                    <option value="">Selecione um tipo</option>
+                    <option value="Suborbital">Suborbital</option>
+                    <option value="Orbital">Orbital</option>
+                    <option value="Estação Espacial">Estação Espacial</option>
+                    <option value="Lunar">Lunar</option>
+                    <option value="Interplanetário">Interplanetário</option>
+                  </select>
+                  <label for="tipo" class="required-field">Tipo</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-floating mb-3">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="preco"
+                    placeholder="Preço"
+                    min="0"
+                    step="0.01"
+                    required
+                  />
+                  <label for="preco" class="required-field">Preço (R$)</label>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-check form-switch mb-3 mt-3">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="disponibilidade"
+                    checked
+                  />
+                  <label class="form-check-label" for="disponibilidade"
+                    >Disponível para venda</label
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div class="form-floating mb-3">
+              <textarea
+                class="form-control"
+                id="descricao"
+                placeholder="Descrição"
+                style="height: 100px"
+                required
+              ></textarea>
+              <label for="descricao" class="required-field">Descrição</label>
+            </div>
+
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+              <button
+                type="button"
+                class="btn btn-secondary me-md-2"
+                id="btnCancelar"
+              >
+                Cancelar
+              </button>
+              <button type="submit" class="btn btn-primary" id="btnSalvar">
+                Salvar
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Aba de detalhes -->
+        <div class="tab-pane fade" id="detalhes" role="tabpanel">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Detalhes do Pacote</h2>
+            <div>
+              <button class="btn btn-outline-primary me-2" id="btnEditar">
+                <i class="bi bi-pencil"></i> Editar
+              </button>
+              <button class="btn btn-outline-danger" id="btnExcluir">
+                <i class="bi bi-trash"></i> Excluir
+              </button>
+            </div>
+          </div>
+
+          <!-- Loader -->
+          <div class="text-center mb-4">
+            <div
+              class="spinner-border text-primary custom-loader"
+              id="detalhesLoader"
+              role="status"
+            >
+              <span class="visually-hidden">Carregando...</span>
+            </div>
+          </div>
+
+          <!-- Card com detalhes do pacote -->
+          <div class="card" id="detalhesPacote">
+            <div class="card-header bg-primary text-white">
+              <h3 class="card-title mb-0" id="detalhesTitulo">
+                Informações do Pacote
+              </h3>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <h5><i class="bi bi-rocket"></i> Tipo</h5>
+                  <p id="detalhesTipo"></p>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <h5><i class="bi bi-currency-dollar"></i> Preço</h5>
+                  <p id="detalhesPreco"></p>
+                </div>
+                <div class="col-12 mb-3">
+                  <h5><i class="bi bi-check-circle"></i> Disponibilidade</h5>
+                  <p id="detalhesDisponibilidade"></p>
+                </div>
+                <div class="col-12">
+                  <h5><i class="bi bi-info-circle"></i> Descrição</h5>
+                  <p id="detalhesDescricao"></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Modal de Confirmação -->
     <div class="modal fade" id="confirmModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Confirmação</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
-                </div>
-                <div class="modal-body">
-                    <p id="confirmMessage"></p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-danger" id="btnConfirmAction">Confirmar</button>
-                </div>
-            </div>
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Confirmação</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Fechar"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p id="confirmMessage"></p>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <button type="button" class="btn btn-danger" id="btnConfirmAction">
+              Confirmar
+            </button>
+          </div>
         </div>
+      </div>
     </div>
 
     <!-- Container para mensagens de alerta -->
@@ -287,5 +410,5 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Script da página -->
     <script src="js/cadastroPacote.js"></script>
-</body>
+  </body>
 </html>
